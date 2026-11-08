@@ -1,9 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSun } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { useTextStore } from "../store/TextStore";
 
 const HeaderComponent = () => {
+  const theme = useTextStore((state) => state.theme);
+  const toggleTheme = useTextStore((state) => state.toggleTheme);
+
   return (
-    <header className="flex flex-row justify-between items-center p-4">
+    <header className="flex flex-row items-center justify-between p-4">
       <div className="flex flex-row gap-2">
         <svg
           aria-hidden="true"
@@ -14,17 +18,27 @@ const HeaderComponent = () => {
         >
           <path d="M3 2h13v28H3z" fill="#c084fc" />
           <path d="M16 5a11 11 0 1 1 0 22V5Z" fill="#c084fc" />
-          <path d="M16 5a11 11 0 0 0 0 22V5Z" fill="#1e1e27" />
+          <path
+            d="M16 5a11 11 0 0 0 0 22V5Z"
+            className="fill-white dark:fill-[#12131a]"
+          />
         </svg>
-        <h1 className="text-white text-2xl">Character Counter</h1>
+        <h1 className="text-2xl text-zinc-900 dark:text-zinc-100">
+          Character Counter
+        </h1>
       </div>
       <button
         type="button"
-        aria-label="Toggle color theme"
-        title="Toggle color theme"
-        className="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg"
+        aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+        aria-pressed={theme === "light"}
+        title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+        onClick={toggleTheme}
+        className="rounded-lg bg-zinc-100 p-3 text-zinc-900 transition-colors hover:bg-zinc-200 dark:bg-[#24252f] dark:text-zinc-100 dark:hover:bg-[#343541]"
       >
-        <FontAwesomeIcon icon={faSun} aria-hidden="true" />
+        <FontAwesomeIcon
+          icon={theme === "dark" ? faSun : faMoon}
+          aria-hidden="true"
+        />
       </button>
     </header>
   );

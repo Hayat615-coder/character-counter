@@ -2,12 +2,16 @@ import { useTextStore } from "../store/TextStore";
 
 const CountsCard = () => {
   const text = useTextStore((state) => state.text);
+  const excludeSpaces = useTextStore((state) => state.excludeSpaces);
+  const characterCount = Array.from(text).filter(
+    (character) => !excludeSpaces || !/\s/u.test(character),
+  ).length;
   const words = text.trim() ? text.trim().split(/\s+/u).length : 0;
   const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/gu)?.length ?? 0;
   const cards = [
     {
       label: "Total Characters",
-      count: Array.from(text).length,
+      count: characterCount,
       background: "bg-purple-400",
       pattern: (
         <g fill="white">
